@@ -10,3 +10,5 @@ npm run dev
 npm install vue-router@4
 
 npm install element-plus
+
+# 开放版本

@@ -7,8 +7,12 @@
 npm install
 npm run dev
 # Vue3
-npm install vue-router@4
+```
 
 npm install element-plus
+```
+···
+npm install element-plus
 
-# 开放版本
+
+# 开发版本

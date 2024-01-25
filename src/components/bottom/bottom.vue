@@ -13,10 +13,10 @@
     width: 100%;
     height: 150px;
     background: #202328;
-    margin-top: 10px;
-    position: absolute;
+    margin-top: 50px;
+  
     bottom: 0;
-    margin-top: 160px;
+
     margin: auto;
 }
 </style>

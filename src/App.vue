@@ -83,7 +83,9 @@ onUnmounted(() => {
 
   
 
+   <div style=" margin-top: 4em;">
     <router-view></router-view>
+    </div>
     <Bottom></Bottom>
   </div>
 </template>
@@ -91,6 +93,7 @@ onUnmounted(() => {
 <style scoped>
 
 .top{
+ opacity: .9;
   width: 100%;
   position: fixed;
   background: #FFFFFF;
@@ -98,7 +101,9 @@ onUnmounted(() => {
   left: 50%;
   transform: translateX(-50%);
   overflow: hidden;
+  z-index: 999;
   animation: scaleHeight .5s ease-in-out forwards;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
  @keyframes  scaleHeight {
@@ -112,12 +117,12 @@ onUnmounted(() => {
  }
 
 .index{
-
+  min-width: 1284px;
 max-width: 1980px;
 position: relative;
 margin: auto;
-min-width: 1284px;
-height: 2000px;
+
+
 
     
 }

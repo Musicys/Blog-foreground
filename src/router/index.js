@@ -22,7 +22,7 @@ import Share from "../page/share/index.vue"
   },
   {
     path: '/share',
-    name: 'Contents',
+    name: 'Share',
     component: Share
   },
   

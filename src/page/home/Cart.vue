@@ -53,19 +53,22 @@
     color: rgba(0, 0, 0, .3);
 }
 .nr{
+    text-indent: 2em; /* 2em为首行缩进的大小 */
     width: 85%;
     color: black;
-    font-size: 16px;
+    font-size: 13px;
+    line-height: 24px;
     text-align: justify;
     margin-bottom: 20px;
     perspective: 1000px; 
 }
 .cart{
+    width: 300px;
     justify-content: space-between;
     display: flex;
     flex-direction: column;
     align-items: center;
-   width: 300px;
+   
 
    background: #FFFFFF;
     position: relative;
@@ -84,13 +87,13 @@
 
 }
 .font-s{
-    font-size: 18px;
+    font-size: 12px;
     color: #ABABAB;
-    margin-top: .3em;
+    margin-top: .8em;
     font-weight: bold;
 }
 .font-t{
-    font-size: 24px;
+    font-size: 18px;
     color: black;
 }
 .font-a{

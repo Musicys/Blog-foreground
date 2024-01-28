@@ -19,7 +19,7 @@
  
 .img{
     width: 100%;
-    height: 450px;
+    height: 350px;
 
 }
  .bt{
@@ -62,7 +62,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-   width: 300px;
+    width: 300px;
 
    background: #FFFFFF;
     position: relative;

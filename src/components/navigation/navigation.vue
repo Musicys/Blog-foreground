@@ -62,12 +62,12 @@ const setLubBool=()=>{
 
     if(LubBool.value)
     {
-        myMethod(495)
+        myMethod(415)
         console.log("执行");
     }
     else
     {
-        myMethod(45)
+        myMethod(-15)
     }
  
  

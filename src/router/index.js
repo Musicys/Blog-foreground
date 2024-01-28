@@ -4,7 +4,7 @@ import Contents from "../page/contents/index.vue"
 import Home from "../page/home/index.vue"
 import Myinformation from "../page/myinformation/index.vue"
 import Share from "../page/share/index.vue"
-
+import Invitation from "../page/invitation/index.vue"
 
 
 
@@ -14,11 +14,14 @@ import Share from "../page/share/index.vue"
     path: '/',
     name: 'Home',
     component: Home
+    
+   
   },
   {
     path: '/contents',
     name: 'Contents',
-    component: Contents
+    component: Contents,
+ 
   },
   {
     path: '/share',
@@ -30,8 +33,12 @@ import Share from "../page/share/index.vue"
     path: '/myinformation',
     name: 'Myinformation',
     component: Myinformation
+  },
+  {
+    path: '/invitation',
+    name: 'Invitation',
+   component: Invitation
   }
-  
 
 ]
 

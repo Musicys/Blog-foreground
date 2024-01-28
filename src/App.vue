@@ -50,7 +50,7 @@ const setheight=(vlaue)=>{
 provide('setheight', setheight);
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
-  setheight(495)
+  setheight(405)
 });
 
 onUnmounted(() => {
@@ -69,7 +69,7 @@ onUnmounted(() => {
     
  
 
-<div class="index_ml">
+<div class="index_ml" v-if="!visibility">
   <div class="logo">
   <span>Music</span>
   <span>Robot</span>
@@ -79,6 +79,18 @@ onUnmounted(() => {
   <router-link to="/share"   :class="tab==3?'ya_a':'ya_b'"  @click="cilcktab(3)">图片分享</router-link>
   <router-link to="/myinformation"    :class="tab==4?'ya_a':'ya_b'"   @click="cilcktab(4)">我的信息</router-link>
 </div>
+
+<div class="index_mls" v-else>
+  <div class="logos">
+  <span>Music</span>
+
+  </div>
+  <router-link to="/" :class="tab==1?'ya_a':'ya_b'" @click="cilcktab(1)" >博客首页</router-link>
+  <router-link to="/contents" :class="tab==2?'ya_a':'ya_b'" @click="cilcktab(2)">博文目录</router-link>
+  <router-link to="/share"   :class="tab==3?'ya_a':'ya_b'"  @click="cilcktab(3)">图片分享</router-link>
+  <router-link to="/myinformation"    :class="tab==4?'ya_a':'ya_b'"   @click="cilcktab(4)">我的信息</router-link>
+</div>
+
     </div>
 
   
@@ -86,14 +98,14 @@ onUnmounted(() => {
    <div style=" margin-top: 4em;">
     <router-view></router-view>
     </div>
-    <Bottom></Bottom>
+    <!-- <Bottom></Bottom> -->
   </div>
 </template>
 
 <style scoped>
 
 .top{
- opacity: .9;
+
   width: 100%;
   position: fixed;
   background: #FFFFFF;
@@ -112,7 +124,7 @@ onUnmounted(() => {
         height: 0;
       }
       100% {
-        height: 80px;
+        height: 40px;
       }
  }
 
@@ -144,13 +156,26 @@ margin: auto;
 
 .index_ml{
   width: 70%;
-  height: 80px;
+height: 80px;
   border: 1rxp solid black;
  
   margin: auto;
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+.index_mls{
+  width: 70%;
+  height: 100%;
+  border: 1rxp solid black;
+ 
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.index_mls> a{
+  padding: 1em;
 }
 .index_ml>a{
   

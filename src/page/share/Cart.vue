@@ -1,23 +1,48 @@
 <template>
-    <div class="cart">
+   <div class="cart">
     
-            <img class="img" src="https://img2.baidu.com/it/u=1018869899,3899411690&fm=253&fmt=auto&app=138&f=JPEG?w=269&h=500" alt="">
+    <img class="img" :src="usedata.url" alt="">
 
-         <div class="bt">
-             <div class=""><img  src="../../static/dzan.png" alt="">99 </div>
-             <div class=""> <img src="../../static/pinr.png" alt="">99</div>
-             <div class=""><img src="../../static/gk.png" alt="">99</div>
-         </div>
-    </div>
- </template>
- 
- <script setup>
- 
- </script>
- 
- <style scoped>
- 
-.img{
+ <div class="bt">
+     <div class=""><img  src="../../static/dzan.png" alt="">{{ data.sareGood
+ }}</div>
+     <div class=""> <img src="../../static/pinr.png" alt="">{{ data.sareDown
+ }}</div>
+     <div class=""><img src="../../static/gk.png" alt="">{{ data.sareGc }}</div>
+ </div>
+</div>
+</template>
+
+<script setup>
+ import { defineProps,onMounted,ref } from 'vue';
+
+const props = defineProps({
+  data: {
+    type: String,
+    required: true
+  }
+});
+import {getCurrentInstance} from "vue"
+
+const usedata=ref({
+    url:"https://img2.baidu.com/it/u=1018869899,3899411690&fm=253&fmt=auto&app=138&f=JPEG?w=269&h=500"
+})
+let $r=getCurrentInstance().appContext.config.globalProperties.$htps
+
+onMounted(() => {
+
+  
+    $r.img(props.data.sareUrl).then(res=>{
+        usedata.value.url=res
+    })
+
+
+})
+
+</script>
+
+<style  scoped>
+ .img{
     width: 100%;
     height: 350px;
 
@@ -100,4 +125,7 @@
     border-right:1px solid rgba(0, 0, 0, .3);
 }
 
- </style>
+</style>
+
+
+

@@ -3,10 +3,10 @@
 
         <div class="box-but">
   
-  <span class="box-bt">Robot</span>
+  <span class="box-bt">{{useStore().state.user.userdata.bkName}}</span>
   <div class="xx">
-      <img src="https://img1.baidu.com/it/u=3519458463,1887460190&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" alt="">
-      <span>music</span>
+      <img :src="user.userTx" alt="">
+      <span>{{useStore().state.user.userdata.usernames}}</span>
   </div>
   <div class="grid">
    <Aurl></Aurl>
@@ -15,7 +15,7 @@
 </div>
      <div class="box-top">
      
-        <img class="box-img" src="https://tse4-mm.cn.bing.net/th/id/OIP-C.wkyv5_jbDUpoNjrI8Nm1SwHaFj?w=208&h=156&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="">
+        <img class="box-img" :src="user.userFlimg" alt="">
         <span class="box-bt">博客分类</span>
         <ol >
         <li style="    border-top: 1px solid rgba(0, 0, 0, .3);"><span>99</span><span>99</span></li>
@@ -32,7 +32,7 @@
 
      <div class="box-center">
      
-     <img class="box-img" src="https://tse4-mm.cn.bing.net/th/id/OIP-C.wkyv5_jbDUpoNjrI8Nm1SwHaFj?w=208&h=156&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="">
+     <img class="box-img" :src="user.userFlimg"  alt="">
      <span class="box-bt">最新动态</span>
 
 
@@ -51,6 +51,29 @@
 
 <script setup>
 import Aurl from "../../components/Aurl/Aurl.vue"
+
+import {useStore} from "vuex"
+import {ref} from "vue"
+
+const user=ref({
+    userTx:"",
+    userFlimg:""
+})
+
+import {getCurrentInstance} from "vue"
+let $r=getCurrentInstance().appContext.config.globalProperties.$htps
+
+
+$r.img(useStore().state.user.userdata.userImg).then(res=>{
+    user.value.userTx = res
+})
+
+$r.img(useStore().state.user.userdata.userLimg).then(res=>{
+    user.value.userFlimg = res
+})
+
+
+
 </script>
 
 <style scoped>

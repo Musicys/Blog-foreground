@@ -24,7 +24,7 @@ class Nuber{
     value=6;
     constructor(){
         this.value=Math.round((myElement.value.offsetHeight-60)/170)
-        console.log('数据', this.value);
+     
     }
     get(){
         return this.value

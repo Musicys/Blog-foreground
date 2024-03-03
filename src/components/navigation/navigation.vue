@@ -29,10 +29,9 @@
             <div class="nav-but-but"></div>
          
                 <van-swipe  class='rbt '  :autoplay="6000" indicator-color="white">
-                <van-swipe-item class="item" > <img class="rbt" src="https://img2.baidu.com/it/u=2164023972,3595561959&fm=253&fmt=auto&app=138&f=JPEG?w=705&h=500" alt=""></van-swipe-item>
-                <van-swipe-item class="item"> <img class="rbt" src="https://img2.baidu.com/it/u=2164023972,3595561959&fm=253&fmt=auto&app=138&f=JPEG?w=705&h=500" alt=""></van-swipe-item>
-                <van-swipe-item class="item"> <img class="rbt" src="https://img2.baidu.com/it/u=2164023972,3595561959&fm=253&fmt=auto&app=138&f=JPEG?w=705&h=500" alt=""></van-swipe-item>
-                <van-swipe-item class="item"> <img class="rbt" src="https://img2.baidu.com/it/u=2164023972,3595561959&fm=253&fmt=auto&app=138&f=JPEG?w=705&h=500" alt=""></van-swipe-item>
+                <van-swipe-item class="item"  v-for="(i,index) in  data" key="index"> <img class="rbt" :src="i" alt=""></van-swipe-item>
+             
+                
                 </van-swipe>
 
 
@@ -51,7 +50,7 @@ import { onMounted, ref,inject } from 'vue'
 
 
   
-const LubBool=ref(true);
+const LubBool=ref(false);
 
 const myMethod = inject('setheight');
 
@@ -73,7 +72,41 @@ const setLubBool=()=>{
  
 }
 
+import {getCurrentInstance} from "vue"
+let $r=getCurrentInstance().appContext.config.globalProperties.$htps
 
+// 轮播图数据
+const data =ref([])
+class MyMethod
+{
+
+  
+
+    constructor(){
+        this.axois()
+     
+    }
+    async axois(){
+
+// 
+        let arr=(await $r.get("/home/list?id=1")).imgarr.split(",")
+        // console.log(arr);
+      
+        data.value=await $r.img(arr)
+
+        
+
+        console.log(  "数据",data.value);
+    }
+}
+
+
+onMounted(()=>{
+   
+ 
+
+    new MyMethod();
+})
 
 
 

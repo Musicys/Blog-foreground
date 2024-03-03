@@ -3,25 +3,80 @@
    
         <div class="logos"><img style=" width: 50px;
     height: 50px;" src="../../static/bjbs.png" alt=""></div>
-        <div class="font-s">分类</div>
-        <span class="font-t">主题</span>
-        <div class="font-s" style="margin-bottom: 1em;">2024-1-25</div>
+        <div class="font-s">{{ biaoq }}</div>
+        <span class="font-t">{{descBt}}</span>
+        <div class="font-s" style="margin-bottom: 1em;">{{time
+}}</div>
 
         <div class="nr" >
         
-            青春是一段美丽的旅程，我们怀揣着无尽的憧憬和勇气，为梦想奋斗、为爱情奉献，在岁月的长河中努力追求成长与成就，相信自己的力量，挑战困难，不畏失败，用积极的态度和坚定的信念去创造属于自己的精彩人生。
+        {{ descWz}}
+        
         </div>
         <div class="font-a">阅读全文</div>
         <div class="bt">
-            <div class=""><img  src="../../static/dzan.png" alt="">99 </div>
-            <div class=""> <img src="../../static/pinr.png" alt="">99</div>
-            <div class=""><img src="../../static/gk.png" alt="">99</div>
+            <div class=""><img  src="../../static/dzan.png" alt="">{{ descGood
+ }} </div>
+            <div class=""> <img src="../../static/pinr.png" alt="">{{ count }}</div>
+            <div class=""><img src="../../static/gk.png" alt="">{{ descSach
+ }}</div>
         </div>
    </div>
 </template>
 
-<script setup>
+<script >
+import $r from "../../htpps/request.js"
+export default {
+    props:["data"],
+    data(){
+        return{
+           ...this.data,
+            biaoq:"java",
+            count:"1"
+        
+        }
+    },
+    methods: {
+        async setbiaoq(){
+          
+        //    console.log("=====>" ,typeof await $r.get(`/comment/pr/list/count?id=${this.id}`));
+          
+           let a=await $r.get(`/comment/pr/list/count?id=${this.id}`)
+           if(typeof a=='number')
+           {
+            this.count=a
 
+           }
+           else{
+            this.count=a.data
+           }
+          
+          
+           this.biaoq=await $r.get(`/label/list/sare/bq?id=${this.labelId}`).name
+        }
+    },
+    mounted() {
+        console.log("Cart====>",{...this.data});
+
+        this.setbiaoq()
+    },
+    computed:{
+        time(){
+            let dateString =   this.createTime
+            let date = new Date(dateString);
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+       
+
+        }
+    }
+    
+}
 </script>
 
 <style  scoped>

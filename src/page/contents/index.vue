@@ -2,16 +2,13 @@
     <div class="contentnts">
        <div class="letf">
 
-        <span class="ys_2 ">推荐内容</span>
-        <span class="ys">Springbootjava</span>
-         <span class="ys">动漫社区</span>
-        <span class="ys">c++</span>
-        <span class="ys" v-for="i in 100">javascprit</span>
+        <span v-for="(i,key) in tages" :key="i.id" :class=" tabtais==key?'ys_2':'ys' " @click="settabtais(key,i)">{{ i. name }}</span>
+       
 
        </div>
 
        <div class="right">
-            <div class="carts" v-for="i in 300">
+            <div class="carts" v-for="i in seachtagarr">
                 <img src="https://img2.baidu.com/it/u=2567815651,4023118117&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500" alt="">
                 <span class="cart-bt">活在当下，梦想永不停息</span>
                 <span class="cart-time">2024-1-25</span>
@@ -21,7 +18,54 @@
 </template>
 
 <script setup>
+import {ref,onMounted} from "vue"
 
+import {getCurrentInstance} from "vue"
+let $r=getCurrentInstance().appContext.config.globalProperties.$htps
+
+    // 标签
+ const tages = ref({
+
+})
+
+// 选中标签内容
+const seachtagarr=ref([
+
+])
+
+// 选中的标签
+const tabtais=ref(0)
+// =====>methods
+
+const settabtais=async (id,i)=>{
+   
+    tabtais.value=id
+    seachtagarr.value=await $r.get(`/desc/wz/list/bq?labid=${i.id}`)
+    console.log(await $r.get(`/desc/wz/list/bq?labid=${i.id}`));
+}
+
+
+// =====>mounted
+
+
+
+
+class setdata{
+
+    constructor()   {
+       this.settages()
+      
+    }
+   async settages(){
+        tages.value=(await $r.get("/label/list/sare?page=1&pagesize=9999")).records
+       settabtais(0, tages.value[0])
+    }
+
+
+}
+onMounted(()=>{
+    new setdata()
+})
 
 
 </script>
@@ -51,13 +95,15 @@
     color: rgba(0, 0, 0, .3);
 }
 .carts{
-    width: 100%;
-   height: 100%;
-  
+  width: 230px;
+   height:200px;
+   
     display: flex;
+    margin-left: 1em;
     flex-direction: column;
     margin-bottom: 10px;
-  flex-wrap: wrap;
+    flex-wrap: wrap;
+  
 
 }
 .cart-bt{
@@ -70,7 +116,7 @@
 }
 .carts > img{
     width: 100%;
-    height: 200px;
+    height: 150px;
     border-radius: 10px;
 }
 .contentnts{
@@ -129,10 +175,11 @@
     flex: 1;
     margin-left: 1em;
     padding: 1rem;
-    display: grid;
-     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  /* 将容器分成四列，每列占据相等的空间 */
-     gap: 10px;  
-     grid-template-rows: repeat(3, 250px); 
+    display: flex;
+    
+    justify-content: start;
+    flex-wrap: wrap;
+  align-content: start;
      min-height: 90vh;
     max-height: 90vh;
      overflow: auto;

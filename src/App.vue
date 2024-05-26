@@ -4,6 +4,21 @@ import { ref, onMounted, onUnmounted, provide ,inject} from 'vue';
 
 import Navigation from "./components/navigation/navigation.vue"
 import Bottom from  "./components/bottom/bottom.vue"
+
+// ***********用户存储********
+
+import {getuserdata,setdata} from "./util/store"
+
+
+setdata()
+
+// ***************************
+
+
+
+
+
+
 // 动画效果 等
 
 const tab=ref(1)
@@ -56,7 +71,7 @@ class use{
 }
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
-  setheight(405)
+  setheight(15)
 });
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
@@ -109,7 +124,7 @@ class setdatas{
       data.value=await $r.get("/home/list?id=1")
      
    
-     $r.get("/user").then(res=>{
+     $r.get("/user/list").then(res=>{
      userdata.value=res
      this.user.commit("user/setusedata", {...res,...data.value})
       // console.log("主页数据====》",this.user.state.user.Isuserdata);
@@ -187,7 +202,7 @@ import Loding from "./components/loding/Loding.vue"
   </div>
   <router-link to="/" :class="tab==1?'ya_a':'ya_b'" @click="cilcktab(1)" >博客首页</router-link>
   <router-link to="/contents" :class="tab==2?'ya_a':'ya_b'" @click="cilcktab(2)">博文目录</router-link>
-  <router-link to="/share"   :class="tab==3?'ya_a':'ya_b'"  @click="cilcktab(3)">图片分享</router-link>
+  <router-link to="/share"   :class="tab==3?'ya_a':'ya_b'"  @click="cilcktab(3)">音乐分享</router-link>
   <router-link to="/myinformation"    :class="tab==4?'ya_a':'ya_b'"   @click="cilcktab(4)">我的信息</router-link>
 </div>
 
@@ -198,7 +213,7 @@ import Loding from "./components/loding/Loding.vue"
   </div>
   <router-link to="/" :class="tab==1?'ya_a':'ya_b'" @click="cilcktab(1)" >博客首页</router-link>
   <router-link to="/contents" :class="tab==2?'ya_a':'ya_b'" @click="cilcktab(2)">博文目录</router-link>
-  <router-link to="/share"   :class="tab==3?'ya_a':'ya_b'"  @click="cilcktab(3)">图片分享</router-link>
+  <router-link to="/share"   :class="tab==3?'ya_a':'ya_b'"  @click="cilcktab(3)">音乐分享</router-link>
   <router-link to="/myinformation"    :class="tab==4?'ya_a':'ya_b'"   @click="cilcktab(4)">我的信息</router-link>
 </div>
 
@@ -219,16 +234,7 @@ import Loding from "./components/loding/Loding.vue"
 </template>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
 
-.fade-enter,
-.fade-leave-to {
-
-  opacity: 0;
-}
 .top{
 
   width: 100%;
@@ -254,7 +260,7 @@ import Loding from "./components/loding/Loding.vue"
  }
 
 .index{
-  min-width: 1284px;
+min-width: 1284px;
 max-width: 1980px;
 position: relative;
 margin: auto;

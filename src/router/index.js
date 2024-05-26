@@ -5,6 +5,7 @@ import Home from "../page/home/index.vue"
 import Myinformation from "../page/myinformation/index.vue"
 import Share from "../page/share/index.vue"
 import Invitation from "../page/invitation/index.vue"
+import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
 
 
 
@@ -12,16 +13,14 @@ import Invitation from "../page/invitation/index.vue"
  const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
-    
-   
+    // name: 'Home',
+    component: Home,
+  
   },
   {
     path: '/contents',
     name: 'Contents',
-    component: Contents,
- 
+    component: Contents
   },
   {
     path: '/share',
@@ -36,8 +35,13 @@ import Invitation from "../page/invitation/index.vue"
   },
   {
     path: '/invitation',
-    name: 'Invitation',
-   component: Invitation
+    component: () => import('../page/invitation/index.vue'),
+  },
+  {
+    path:"/music",
+    component:()=>import("../page/music/index.vue"),
+  
+    
   }
 
 ]

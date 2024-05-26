@@ -17,13 +17,9 @@
      
         <img class="box-img" :src="user.userFlimg" alt="">
         <span class="box-bt">博客分类</span>
-        <ol >
-        <li style="    border-top: 1px solid rgba(0, 0, 0, .3);"><span>99</span><span>99</span></li>
-        <li ><span>java</span><span>44</span></li>
-        <li><span>c++</span><span>55</span></li>
-        <li><span>js、Python</span><span>99</span></li>
-        <li><span>javasciprt</span><span>99</span></li>
-        
+        <ol class="li" >
+        <li v-for="i in data" :key="i"><span>{{ i.title}}</span><span>{{ i.count }}</span></li>
+     
         </ol>
     
 
@@ -36,10 +32,8 @@
      <span class="box-bt">最新动态</span>
 
 
-     <ol>
-     <li  style="    border-top: 1px solid rgba(0, 0, 0, .3);"><img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.wkyv5_jbDUpoNjrI8Nm1SwHaFj?w=208&h=156&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt=""><span>99</span></li>
-     <li><img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.wkyv5_jbDUpoNjrI8Nm1SwHaFj?w=208&h=156&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt=""><span>提升品牌形象并满足业务需求</span></li>
-     <li><img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.wkyv5_jbDUpoNjrI8Nm1SwHaFj?w=208&h=156&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt=""><span>提升品牌形象并满足业务需求</span></li>
+     <ol class="li">
+     <li v-for="i in dataTwo" :key="i" ><img :src="i.descImg" alt=""><span>{{ i.descBt }}</span></li>
    
      </ol>
  
@@ -51,16 +45,35 @@
 
 <script setup>
 import Aurl from "../../components/Aurl/Aurl.vue"
-
+import {listvalue,desclist} from "../../htpps/indexs"
 import {useStore} from "vuex"
-import {ref} from "vue"
+import {getCurrentInstance,onMounted,ref} from "vue"
+import request  from "../../htpps/request"
+const data=ref([])
+const dataTwo=ref([])
+const setdata=async ()=>{
+    data.value= await listvalue(5)
+    dataTwo.value=(await desclist({
+        page:1,
+        pageSize:3
+    })).data.records 
+     for(let i in dataTwo.value)
+     {
+            try {
+            dataTwo.value[i].descImg=await request.img(dataTwo.value[i].descImg)
+            } catch (error) {
+                console.log(dataTwo.value);
+            }
+    }
+     console.log(dataTwo.value);
+}
+
 
 const user=ref({
     userTx:"",
     userFlimg:""
 })
 
-import {getCurrentInstance} from "vue"
 let $r=getCurrentInstance().appContext.config.globalProperties.$htps
 
 
@@ -72,12 +85,18 @@ $r.img(useStore().state.user.userdata.userLimg).then(res=>{
     user.value.userFlimg = res
 })
 
+onMounted(()=>{
+    setdata()
+})
 
 
 </script>
 
 <style scoped>
-
+.li>li:nth-child(1)
+{
+     border-top: 1px solid rgba(0, 0, 0, .3);
+}
 .box{
 
     width: 100%;

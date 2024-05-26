@@ -1,5 +1,5 @@
 <template>
-    <div class="contentnts">
+    <div class="contentnts" >
        <div class="letf">
 
         <span v-for="(i,key) in tages" :key="i.id" :class=" tabtais==key?'ys_2':'ys' " @click="settabtais(key,i)">{{ i. name }}</span>
@@ -7,21 +7,30 @@
 
        </div>
 
-       <div class="right">
-            <div class="carts" v-for="i in seachtagarr">
+       <div class="right" >
+        <div class="carts" v-for="i in seachtagarr" :key="i.id" @click="gowz(i.id)">
                 <img src="https://img2.baidu.com/it/u=2567815651,4023118117&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500" alt="">
-                <span class="cart-bt">活在当下，梦想永不停息</span>
-                <span class="cart-time">2024-1-25</span>
+                <span class="cart-bt">{{i.descBt}}</span>
+                <span class="cart-time">{{ i.createTime }}</span>
             </div>
        </div>
     </div>
+ 
+
 </template>
 
 <script setup>
-import {ref,onMounted} from "vue"
 
+
+import Invition from "../invitation/index.vue"
+
+import {ref,onMounted} from "vue"
+import { useRouter } from "vue-router";
+const router= useRouter()
 import {getCurrentInstance} from "vue"
 let $r=getCurrentInstance().appContext.config.globalProperties.$htps
+
+
 
     // 标签
  const tages = ref({
@@ -41,7 +50,7 @@ const settabtais=async (id,i)=>{
    
     tabtais.value=id
     seachtagarr.value=await $r.get(`/desc/wz/list/bq?labid=${i.id}`)
-    console.log(await $r.get(`/desc/wz/list/bq?labid=${i.id}`));
+    
 }
 
 
@@ -54,17 +63,53 @@ class setdata{
 
     constructor()   {
        this.settages()
-      
+        
     }
    async settages(){
         tages.value=(await $r.get("/label/list/sare?page=1&pagesize=9999")).records
        settabtais(0, tages.value[0])
+     
     }
 
 
 }
+
+
+
+const gowz=(i)=>
+{
+
+   
+
+   
+    router.push({ 
+    path: `/invitation`,
+    query:{
+        id: i,
+        tab:2
+    }
+        });
+
+}
+
+import { onBeforeRouteUpdate } from 'vue-router';
+
+// 在setup函数中监听路由变化
+onBeforeRouteUpdate((to, from, next) => {
+  // 执行你的逻辑
+  console.log('路由从', from.href, '到', to.href);
+  if(to.href=="/contents")
+  {
+   console.log("执行s");
+   isindex.value=true
+  }
+
+  next();
+});
 onMounted(()=>{
     new setdata()
+   
+    
 })
 
 

@@ -29,7 +29,7 @@
             <div class="nav-but-but"></div>
          
                 <van-swipe  class='rbt '  :autoplay="6000" indicator-color="white">
-                <van-swipe-item class="item"  v-for="(i,index) in  data" key="index"> <img class="rbt" :src="i" alt=""></van-swipe-item>
+                <van-swipe-item class="item"  v-for="(i,index) in  data" :key="index"> <img class="rbt" :src="i" alt=""></van-swipe-item>
              
                 
                 </van-swipe>
@@ -89,14 +89,22 @@ class MyMethod
     async axois(){
 
 // 
+       
+        
         let arr=(await $r.get("/home/list?id=1")).imgarr.split(",")
         // console.log(arr);
       
-        data.value=await $r.img(arr)
+        for(let i =0;i<arr.length;i++)
+        {
+            console.log(arr[i]);
 
-        
+            arr[i]=await $r.img(arr[i])
+        }
+     
 
-        console.log(  "数据",data.value);
+        data.value=arr
+
+       
     }
 }
 

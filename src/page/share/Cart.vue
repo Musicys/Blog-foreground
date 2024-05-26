@@ -1,21 +1,38 @@
 <template>
-   <div class="cart">
+   <div class="cart" @click="gomusic(usedata)">
     
-    <img class="img" :src="usedata.url" alt="">
+    <div class="top">
+       <div class="zz" :style="`background-image: url(${usedata.url}) ;`"></div>
+       
+    </div>
 
  <div class="bt">
      <div class=""><img  src="../../static/dzan.png" alt="">{{ data.sareGood
  }}</div>
-     <div class=""> <img src="../../static/pinr.png" alt="">{{ data.sareDown
+     <div class=""> <img src="../../static/pinr.png" alt="">{{ prs
  }}</div>
      <div class=""><img src="../../static/gk.png" alt="">{{ data.sareGc }}</div>
+     <div class=""><img src="../../static/dow.png" alt="">{{ data.sareDown }}</div>
  </div>
 </div>
 </template>
 
 <script setup>
  import { defineProps,onMounted,ref } from 'vue';
+import {musicpladdnber} from "../../htpps/indexs"
 
+
+import {useRouter} from "vue-router"
+
+const prs=ref(0)
+
+const setprs=async ()=>{
+   prs.value= await musicpladdnber(props.data.id)
+   console.log("--===>",  prs.value);
+
+}
+
+const router=useRouter()
 const props = defineProps({
   data: {
     type: String,
@@ -23,6 +40,26 @@ const props = defineProps({
   }
 });
 import {getCurrentInstance} from "vue"
+// *********跳转
+const gomusic=(id)=>{
+    var element = document.documentElement;
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.mozRequestFullScreen) { /* Firefox */
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) { /* IE/Edge */
+        element.msRequestFullscreen();
+      }
+    router.push({ 
+    path: '/music',
+    query: { id:props.data.id }
+  })
+}   
+
+
+// **************
 
 const usedata=ref({
     url:"https://img2.baidu.com/it/u=1018869899,3899411690&fm=253&fmt=auto&app=138&f=JPEG?w=269&h=500"
@@ -31,22 +68,45 @@ let $r=getCurrentInstance().appContext.config.globalProperties.$htps
 
 onMounted(() => {
 
-  
+ 
     $r.img(props.data.sareUrl).then(res=>{
         usedata.value.url=res
+        console.log(usedata);
     })
-
+    setprs()
 
 })
 
 </script>
 
 <style  scoped>
- .img{
+ .top{
     width: 100%;
     height: 350px;
-
+    overflow: hidden;
+    position: relative;
+  
+  
 }
+.zz{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    z-index: 3;
+    background-size: 100% 100%; /* 图片尺寸自适应元素大小 */
+    background-repeat: no-repeat; /* 不重复平铺图片 */
+    transition: all .3s;
+    opacity: .6;
+}
+
+
+.zz:hover{
+    opacity: 1;
+    transform: scale(1.2); /* 鼠标悬停时放大 1.2 倍 */
+}
+
  .bt{
     
     width: 100%;
@@ -88,10 +148,10 @@ onMounted(() => {
     flex-direction: column;
     align-items: center;
     width: 300px;
-
+z-index: 0;
    background: #FFFFFF;
     position: relative;
-   
+    overflow: hidden;
     box-shadow: -1px 1px 0 0 rgba(0, 0, 0, .1);
 }
 .cart div{

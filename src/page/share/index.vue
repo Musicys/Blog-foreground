@@ -69,17 +69,24 @@ class Data{
         data.value.page=this.page
         data.value.pageSize=this.pageSize
         data.value.data= a.data.records
-        data.value.total=Math.ceil(a.count/this.pageSize)
-        console.log({...data.value});
+        data.value.total=a.data.total
+
+        console.log("===========>data.vue",a);
+    }
+   
+    xyy(page){
+       
+        this.page=page
+        this.setdata()
     }
     
 
     
 }
-
+    let user=   new Data();
 
 onMounted(()=>{
-    new Data();
+ 
 })
 
 
@@ -88,10 +95,13 @@ onMounted(()=>{
 
 
 const handleSizeChange = (val) => {
-  console.log(`${val} items per page`)
+  console.log(`${val} items per pagexxx`)
+//   user.up
 }
 const handleCurrentChange = (val) => {
-  console.log(`current page: ${val}`)
+  console.log(`current pagxxxxe: ${val}`)
+  user.xyy(val)
+
 }
 </script>
 
@@ -104,14 +114,13 @@ const handleCurrentChange = (val) => {
    padding:10px 20px;
    align-items: center;
    height: 20px;
-  
+
 }
 .flex{
     width: 70%;
     margin: auto;
-    min-width: 899px;
-    min-height: 90vh;
-    max-width: 1980px;
+
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -119,21 +128,24 @@ const handleCurrentChange = (val) => {
 }
 .box{
     width: 100%;
-   
+  
+    height: 90vh;
+    
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     margin: auto;
+ 
     gap: 10px;
-
     margin-bottom: 1em;
    
 }
 .box-cart{
    width: 100%;
-   height: 100%;
-   display: flex;
-   justify-content: center;
-   align-items: center;
+   max-height: 404px;
+    display: flex; 
+    justify-content: center;
+   align-items: center; 
+   
    margin-bottom: 1em;
 }
 </style>

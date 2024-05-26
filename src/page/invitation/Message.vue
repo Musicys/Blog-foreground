@@ -1,19 +1,20 @@
 <template>
+  
     <div class="aurl">
         <div class="top">
         
-            <img src="https://img1.baidu.com/it/u=3519458463,1887460190&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" alt="">
+            <img :src="userurl" alt="">
 
-            <span>Music</span>
+            <span>{{useStore().state.user.userdata.usernames}}</span>
         </div>
 
         <div class="girb">
             
-            <div class=""><span>原创</span><span>99</span></div>
-            <div class=""><span>访问</span><span>99</span></div>
-            <div class=""><span>点赞</span><span>99</span></div>
-            <div class=""><span>帖子</span><span>99</span></div>
-
+            <div class=""><span>原创</span><span>{{ props.descdata.descdata.count }}</span></div>
+            <div class=""><span>访问</span><span>{{ props.descdata.descdata.sach }}</span></div>
+            <div class=""><span>点赞</span><span>{{ props.descdata.descdata.good }}</span></div>
+            <div class=""><span>帖子</span><span>{{ props.descdata.descdata.count}}</span></div>
+          
         
         </div>
 
@@ -24,9 +25,9 @@
         </div>
 
         <div class="but">
-            <div class=""><img src="../../static/mes_dz.png" alt=""><span>点赞</span><span>99</span></div>
-            <div class=""><img src="../../static/meg_pr.png" alt=""><span>评论</span><span>99</span></div>
-            <div class=""><img src="../../static/msg_ydl.png" alt=""><span>阅读量</span><span>99</span></div>
+            <div class=""><img src="../../static/mes_dz.png" alt=""><span>点赞</span><span>{{  props.descdata.descdata.descGood}}</span></div>
+            <div class=""><img src="../../static/meg_pr.png" alt=""><span>评论</span><span>{{  pr}}</span></div>
+            <div class=""><img src="../../static/msg_ydl.png" alt=""><span>阅读量</span><span>{{ props.descdata.descdata.descSach }}</span></div>
         
         
         </div>
@@ -36,11 +37,53 @@
 <script setup>
 
 import Aurl from "./../../components/Aurl/Aurl.vue"
+import {useStore} from "vuex"
+import { defineProps,onMounted,ref } from 'vue';
+import {getCurrentInstance} from "vue"
+import {useRoute} from "vue-router"
+import {prnber} from "../../htpps/indexs"
+
+const route=useRoute()
+
+const pr=ref(0)
+const setpr= async ()=>{
+    pr.value=await prnber(route.query.id)
+   
+
+}
 
 
+let $r=getCurrentInstance().appContext.config.globalProperties.$htps
+
+// :descdata="descdata" :listdata="listdata"
+const props = defineProps({
+    descdata: {
+    type:Object,
+    required: true
+  }
+ 
+});
+
+
+
+
+const userurl=ref()
+$r.img(useStore().state.user.userdata.userZyimg).then(res=>{
+    userurl.value=res
+})
+
+
+onMounted(()=>{
+  console.log(       props.descdata.descdata.count );
+  setpr()
+  
+})
 </script>
 
 <style scoped>
+
+
+
 .but{
     width: 80%;
     margin:10px auto;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'api/',
+  baseURL: '/api',
   timeout: 5000,
 });
 
@@ -22,6 +22,20 @@ instance.interceptors.request.use(
   }
 );
 
+
+function arrtime(time){
+  let dateString =   time
+  let date = new Date(dateString);
+  let year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+
+}
+
 // 响应拦截器
 instance.interceptors.response.use(
   response => {
@@ -34,6 +48,23 @@ instance.interceptors.response.use(
       return response.data
     }
  
+      if(response.data.data.records)
+        {
+         try {
+          response.data.data.records= response.data.data.records.map(item => {
+            if( item.createTime)
+              {
+                item.createTime= arrtime(item.createTime)
+              }
+            return item
+           })
+  
+          
+         } catch (error) {
+          
+         }
+        }
+
         // console.log("响应拦截器--》",response.data );/
         return response.data.data;
 

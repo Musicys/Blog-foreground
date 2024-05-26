@@ -1,68 +1,96 @@
 <template>
-   <div class="cart">
+   <div class="cart" @click="gointe()">
    
         <div class="logos"><img style=" width: 50px;
     height: 50px;" src="../../static/bjbs.png" alt=""></div>
-        <div class="font-s">{{ biaoq }}</div>
-        <span class="font-t">{{descBt}}</span>
+        <div class="font-s">{{ props.data.biaoq }}</div>
+        <span class="font-t">{{props.data.descBt}}</span>
         <div class="font-s" style="margin-bottom: 1em;">{{time
 }}</div>
 
-        <div class="nr" >
+        <div class="nr"  >
         
-        {{ descWz}}
+        {{ props.data.descWz}}
         
         </div>
         <div class="font-a">阅读全文</div>
         <div class="bt">
-            <div class=""><img  src="../../static/dzan.png" alt="">{{ descGood
+            <div class=""><img  src="../../static/dzan.png" alt="">{{ props.data.descGood
  }} </div>
-            <div class=""> <img src="../../static/pinr.png" alt="">{{ count }}</div>
-            <div class=""><img src="../../static/gk.png" alt="">{{ descSach
+            <div class=""> <img src="../../static/pinr.png" alt="">{{  pr }}</div>
+            <div class=""><img src="../../static/gk.png" alt="">{{ props.data.descSach
  }}</div>
         </div>
    </div>
 </template>
 
-<script >
+<script  setup>
+import { useRouter,useRoute } from 'vue-router';
+const router = useRouter();
+import { defineProps, ref ,computed,onMounted} from 'vue';
+import {prnber} from "../../htpps/indexs"
+const pr=ref(0)
+const setpr= async ()=>{
+    pr.value=await prnber(props.data.id)
+    console.log("是否执行");
+
+}
+
+onMounted(()=>{
+    setpr()
+})
+
+const props = defineProps({
+  "data": {
+   
+    required: true
+  },
+  "sethome":{
+    // typeof:function,
+    required: true
+  }
+
+});
+
+
+const gointe=()=>{
+    // let a={...props.data}
+    console.log({...props.data});
+    props.sethome(false)
+ 
+    router.push({ 
+    path: '/invitation',
+    query: { id: props.data.id,tab:1 }
+  })
+
+  
+}
+
 import $r from "../../htpps/request.js"
-export default {
-    props:["data"],
-    data(){
-        return{
-           ...this.data,
-            biaoq:"java",
-            count:"1"
-        
-        }
-    },
-    methods: {
-        async setbiaoq(){
-          
-        //    console.log("=====>" ,typeof await $r.get(`/comment/pr/list/count?id=${this.id}`));
-          
-           let a=await $r.get(`/comment/pr/list/count?id=${this.id}`)
-           if(typeof a=='number')
-           {
-            this.count=a
 
-           }
-           else{
-            this.count=a.data
-           }
-          
-          
-           this.biaoq=await $r.get(`/label/list/sare/bq?id=${this.labelId}`).name
-        }
-    },
-    mounted() {
-        console.log("Cart====>",{...this.data});
 
-        this.setbiaoq()
-    },
-    computed:{
-        time(){
-            let dateString =   this.createTime
+const count=ref(1);
+const biaoq=ref("java")
+const setbiaoq= async ()=>{
+          
+          //    console.log("=====>" ,typeof await $r.get(`/comment/pr/list/count?id=${this.id}`));
+            
+             let a=await $r.get(`/comment/pr/list/count?id=${this.id}`)
+             if(typeof a=='number')
+             {
+              count=a
+  
+             }
+             else{
+              count=a.data
+             }
+            
+            
+            biaoq=await $r.get(`/label/list/sare/bq?id=${this.labelId}`).name
+          }
+    
+       const time= computed(()=>{
+            let dateString =   props.data.createTime
             let date = new Date(dateString);
             let year = date.getFullYear();
             let month = date.getMonth() + 1;
@@ -73,15 +101,15 @@ export default {
             return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
        
 
-        }
-    }
+        })
     
-}
+ 
+
 </script>
 
 <style  scoped>
 .bt{
-   
+    
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -108,11 +136,13 @@ export default {
     color: rgba(0, 0, 0, .3);
 }
 .nr{
+    height: 50%;
     text-indent: 2em; /* 2em为首行缩进的大小 */
     width: 85%;
     color: black;
     font-size: 13px;
-    line-height: 24px;
+    line-height: 20px;
+    overflow: hidden;
     text-align: justify;
     margin-bottom: 20px;
     perspective: 1000px; 
@@ -123,7 +153,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-   
+    height: 350px;
 
    background: #FFFFFF;
     position: relative;

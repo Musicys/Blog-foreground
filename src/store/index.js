@@ -8,7 +8,7 @@ export default createStore({
 //   模块
   modules: {
     user:user,
-  
+    wz:()=>import("./wz.js")
    
   }
 })

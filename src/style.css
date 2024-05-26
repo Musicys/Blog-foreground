@@ -2,7 +2,21 @@
   margin: 0;
   padding: 0;
 
+  font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC',
+  'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  
+}
+@font-face {
+  font-family: MyCustomFont;
+  src: url('./static/one.ttf'); /* 替换成你字体文件的路径 */
+}
 
+@font-face {
+  font-family: Mygeci;
+  src: url('./static/two.ttf'); /* 替换成你字体文件的路径 */
+}
+.example-showcase .el-loading-mask {
+  z-index: 9;
 }
 body{
   background: #F0F0F0;

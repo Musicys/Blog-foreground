@@ -1,5 +1,5 @@
 
-import axios from "axios"
+
 import instance  from "./index.js"
 
 export  default{
@@ -13,7 +13,7 @@ export  default{
         header=header||this.header
         return this.instance.post(url,data,{header:header})
     },
-    get(url,  headers)
+    get(url,headers)
     {
         let hd=headers||this.header
       

@@ -1,19 +1,25 @@
 <template>
-   <div class="home">
+   <div class="home"   v-if="isindexhome">
     <div class="login" v-if="DataNull">
 
 
 
       <div class="item" v-for="(item, index) in data.data" :key="index">
-         <Cart :data="item"></Cart>
+         <Cart :sethome="sethome" :data="item"></Cart>
       </div>
   
  
 
      
    </div>
-   
-   <Nullinformation :childData="123" v-else></Nullinformation>
+
+
+
+  
+
+  
+
+   <!-- <Nullinformation :childData="123" v-else></Nullinformation> -->
    <div class="page">
    <el-pagination layout="prev, pager, next" 
    
@@ -29,11 +35,18 @@
   />
   </div>
    </div>
+
+   
 </template>
 
 <script setup>
 import Nullinformation from "../../components/nullinformation/Nullinformation.vue"
-import {ref,onMounted,inject} from "vue"
+
+
+
+
+
+import {ref,onMounted,inject,watch} from "vue"
 import Cart from "./Cart.vue"
 const tabList=ref(
     [
@@ -65,9 +78,10 @@ class User{
       this.getdata()
    }
     getdata(){
+      
       $r.get(`/desc/wz/lists?page=${this.page}&pageSize=${this.pageSize}`).then(res=>{
         
-         this.total=Math.ceil(res.count/this.pageSize)
+         this.total=res.data.total
          this.data=res.data.records
         
          this.setdata()
@@ -82,27 +96,81 @@ class User{
         total:this.total
          
       }
-      console.log(data.value);
+      console.log("yem==>",data.value);
    }
+   xyy(id){
+   
+      this.page=id;
+      this.getdata()
+
+   } 
+   
    
    
 
+
+
 }
+
+let user=new User();
 const handleSizeChange = (val) => {
-  console.log(`${val} items per page`)
+ 
+   console.log("zhix=>1",val);
+  
+   
 }
 const handleCurrentChange = (val) => {
-  console.log(`current page: ${val}`)
+   user.xyy(val)
+//  x
+  console.log("zhix=21",val);
 }
 
+
+const isindexhome=ref(true)
+const sethome=(Boolean)=>
+{
+   isindexhome.value=Boolean
+}
+
+import { onBeforeRouteUpdate,useRoute } from 'vue-router';
+const route = useRoute();
+const key = ref(route.fullPath);
+
+// 监听路由变化，更新key
+watch(
+  () => route.fullPath,
+  (newVal, oldVal) => {
+    key.value = newVal;
+    console.log("执行");
+  }
+);
+// 在setup函数中监听路由变化
+onBeforeRouteUpdate((to, from, next) => {
+  // 执行你的逻辑
+  console.log('路由从', from.href, '到', to.href);
+  if(to.href=="/")
+  {
+   console.log("执行s");
+   sethome(true)
+  }
+
+  next();
+});
+
 onMounted(()=>{
-   new User();
+   
 })
 
 
 </script>
 
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 .page{
    width: 100%;
    display: flex;

@@ -1,69 +1,132 @@
 <template>
     <div class="aritcle">
         <div class="bt">
-            如何用Python将普通视频变成动漫视频
+            {{props.descdata.descdata.descBt}}
         
         
         </div>
         <div class="time">
         <span>发表时间：</span>
-        <span>2024-1-23 17:50</span>
+        <span>{{ time}}</span>
         </div>
 
         <div class="bq">
         <span>标签：</span>
             <div class="bq_xx">
-            动漫社区
+            {{props.descdata.descdata.biaoname}}
             </div>
-            <div class="bq_xx">
-            动漫社区
-            </div>
-            <div class="bq_xx">
-            动漫社区
-            </div>
+            
+           
         </div>
 
         <div class="nr">
-            <img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.wkyv5_jbDUpoNjrI8Nm1SwHaFj?w=208&h=156&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="">
-
+            <img :src="props.descdata.descdata.url" alt="">
+          
+            {{  props.descdata.descdata.descWz}}
+        
             <p>
-            《进击的巨人》是一部由日本漫画家谏山创创作的漫画作品，后被改编成电视动画和真人电影，并引起了广泛的关注和热议。
-
-故事设定在一个被巨人统治的世界。巨人是一种高大、强壮而具有灵性的生物，它们食人且对人类毫不留情。人类为了生存，只能围绕着三座巨大的城墙中的一个——玛利亚、罗莎和希娜最后的自由地区生活。然而，当一只被称为“超大型巨人”的巨人出现并摧毁了城墙，人类社会陷入了巨人的袭击之中。
-
-故事的主人公是艾伦·耶格尔，一个渴望消灭巨人并重建被摧毁的世界的青年。艾伦和他的朋友们加入了军队，并接受了训练，成为了人类的战士。他们利用一种叫做立体机动装置的设备来与巨人战斗。立体机动装置可以帮助他们在空中自由地移动，攻击巨人的弱点——它们的颈部。
-
-随着剧情的发展，艾伦和他的朋友们不断面对各种各样的巨人，揭示了巨人与人类之间的关系的复杂真相。他们也与其他人类面对面地交战，包括那些企图统治人类的政治势力。在这个充满危险、战斗和谜团的世界中，艾伦和他的伙伴们将不断面对考验，为了自由和和平而奋斗。
-
-《进击的巨人》以其引人入胜的故事情节，复杂的人物关系和惊人的战斗场面而闻名。它深入探索了人性、权力、信念和自由等主题，并提出了许多观众思考的问题。该作品的动画改编也受到了广大观众的喜爱，获得了众多奖项和好评。
-
-总之，《进击的巨人》是一部令人热血沸腾、令人着迷并引人深思的动漫作品，值得一看。
-
-
+      
 </p>
 
 
     
         </div>
- <div class="nr-but">
-    <div class=""><img src="../../static/inc_dz.png" alt=""><span>99</span></div>
-    <div class=""><img src="../../static/inc_pr.png" alt=""><span>99</span></div>
+ <div class="nr-but" >
+    <div class=""  @click="goods"><img src="../../static/inc_dz.png" alt=""><span>{{ props.descdata.descdata.descGood+ Goods}}</span></div>
+    <div class=""><img src="../../static/inc_pr.png" alt=""><span>{{ prnbers}}</span></div>
 </div>
         <div class="pr">
         
-      
-        <Pr></Pr> 
+           
+        <Pr :data="props"></Pr> 
 
-        <div class="pr_but">
-            暂无更多评论
-        </div>
+      
         </div>
 
     </div>
 </template>
 
 <script setup>
+import { defineProps,onMounted,ref,getCurrentInstance, watch ,computed} from 'vue';
 import Pr from "./Pr.vue"
+import { ElNotification } from 'element-plus'
+import {  onBeforeRouteUpdate,useRoute} from 'vue-router';
+const route=useRoute()
+import  {good,prnber} from "../../htpps/indexs.js"
+// *****************************************点赞
+const Goods=ref(0)
+const prnbers=ref(0)
+const setbr=async (id)=>
+{
+    console.log("1111111111111111");
+    prnbers.value= await prnber(id)
+
+}
+const goods=()=>{
+  
+   good(props.descdata.descdata.id).then(res=>{
+    console.log(res);
+    Goods.value+=1
+    ElNotification.success({
+    title: '点赞成功',
+ 
+    offset: 100,
+  })
+
+    
+   })
+}
+
+// 在setup函数中监听路由变化
+onBeforeRouteUpdate((to, from, next) => {
+  // 执行你的逻辑
+  console.log('路由从', from.href, '到', to.query.id);
+  Goods.value=0
+  console.log("===执行====================>");
+   setbr(to.query.id)
+
+  next();
+});
+// *****************************************
+
+
+// *********************************************父组件信息
+let $r=getCurrentInstance().appContext.config.globalProperties.$htps
+const time= computed(()=>{
+            let dateString =   props.descdata.descdata.createTime 
+            let date = new Date(dateString);
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+       
+
+        })
+// :descdata="descdata" :listdata="listdata"
+const props = defineProps({
+    descdata: {
+    type:Object,
+    required: true
+  },
+  list:{
+    typeof:Object,
+    required: true
+  }
+ 
+});
+
+
+// *********************************************
+
+onMounted(()=>{
+  
+    setbr(route.query.id)
+   
+    
+})
 
 </script>
 
@@ -75,16 +138,19 @@ p{
     margin-top: 3em;
     text-align: center;
     color: rgba(0, 0, 0, .3);
+    
 }
 .nr-but{
     display: flex;
     justify-content: end;
-    width: 100%;
+    width: 90%;
     align-items: center;
-    border-bottom: 1px solid rgba(0, 0, 0, .3);
-    margin-bottom: 1em;
+  
+  position: absolute;
+    bottom: 92vh;
+   
 }
-.nr-but>div {
+.nr-but>div{
   
     display: flex;
     justify-content: center;
@@ -101,7 +167,7 @@ p{
 }
 .pr{
     width: 100%;
-    min-height: 500px;
+    min-height: 100px;
 
 }
 
@@ -110,7 +176,7 @@ width: 100%;
 margin:10px ;
 }
 .nr {
-    font-size: 13px;
+    font-size: 1em;
     line-height: 36px;
 
     text-align: justify;
